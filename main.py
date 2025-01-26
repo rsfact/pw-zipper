@@ -4,6 +4,7 @@ import os
 import sys
 import subprocess
 import configparser
+import pyperclip
 
 
 config = configparser.ConfigParser()
@@ -26,6 +27,11 @@ def generate_output(template, file_name, password):
     return template.format(file=file_name, pw=password)
 
 if __name__ == "__main__":
+    if len(sys.argv) >= 3:
+        print("複数ファイルの場合はフォルダをドロップしてください。\n\n")
+        input("Enterキーを押して画面を閉じます。")
+        sys.exit(1)
+
     print(f"圧縮率: {(MX+1)*10}%")
     print("圧縮中...")
 
@@ -64,7 +70,8 @@ if __name__ == "__main__":
     output = generate_output(template, output_file_name, pw)
 
     print("完了\n")
-    print("-----以下をコピー・ペーストして使用-----\n\n")
+    print("-----コピー: ここから-----\n\n")
     print(output)
-
-    input("Enterキーを押して終了します。")
+    print("-----コピー: ここまで-----\n\n")
+    input("Enterキーを押すとコピーされます。")
+    pyperclip.copy(output)
